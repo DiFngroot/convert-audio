@@ -5,11 +5,5 @@
       "src": "/bin/www",
       "use": "@vercel/node"
     }
-  ],
-  "routes": [
-    {
-      "src": "/routes/(.*)",
-      "dest": "/routes/index.js"
-    }
   ]
 }
