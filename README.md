@@ -12,12 +12,6 @@ Node + FFmpeg project for simple music format conversion.
 npm install
 ```
 
-- Run Development the project
-
-```bash
-npm run dev
-```
-
 - Run Start the project
 
 ```bash
