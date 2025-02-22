@@ -1,46 +1,67 @@
 var express = require('express');
 var router = express.Router();
 
-const { exec } = require('child_process')
 const path = require('path')
 const os = require('os')
 const { deleteAllFilesInDir } = require('../utils/commonMethodology')
 const config = require('../config')
 
-router.post('/convert-url', (req, res) => {
+const ffmpeg = require('fluent-ffmpeg');
+
+router.post('/convert-url', async (req, res) => {
   const { url, type } = req.body;
 
-  deleteAllFilesInDir(path.resolve(__dirname, '../tmp'))
+  // deleteAllFilesInDir(path.resolve(__dirname, '../tmp'))
 
-  if (!url && !type) {
-    res.send({ code: 400, data: { url: `` }, msg: 'url and type is required' })
-    return
-  }
+  // if (!url && !type) {
+  //   res.send({ code: 400, data: { url: `` }, msg: 'url and type is required' })
+  //   return
+  // }
 
-  const match = url.match(/\/(\d+)$/);
-  let valueFile = ''
+  // const match = url.match(/\/(\d+)$/);
+  // let valueFile = ''
 
-  if (match) {
-    valueFile = match[1]
-  } else {
-    valueFile = '1000000'
-  }
-  const outputFilePath = path.join(__dirname, '../tmp', `${valueFile}.${type}`)
+  // if (match) {
+  //   valueFile = match[1]
+  // } else {
+  //   valueFile = '1000000'
+  // }
+  // const inputFile = url
+  // const outputFile = path.join(__dirname, '../tmp', `${valueFile}.${type}`)
 
-  exec(`ffmpeg -i ${url} ${outputFilePath}`, (error) => {
-    if (error) {
-      res.send({ code: 500, data: { url: '' }, msg: 'Conversion failed' })
-      return
-    }
-
-    res.send({
-      code: 200,
-      data: {
-        url: `${config.https}${valueFile}.${type}`
-      },
-      msg: 'Conversion Ok'
-    })
+  res.send({
+    code: 200,
+    data: {
+      url: ``,
+      osType: os.type(),
+      osPlatform: os.platform()
+    },
+    msg: 'Conversion Ok'
   })
+
+  // ffmpeg(inputFile)
+  //   .output(outputFile)
+  //   .audioCodec('libmp3lame')
+  //   .audioBitrate('192k')
+  //   .on('end', () => {
+  //     res.send({
+  //       code: 200,
+  //       data: {
+  //         url: `${config.https}${valueFile}.${type}`
+  //       },
+  //       msg: 'Conversion Ok'
+  //     })
+  //   })
+  //   .on('error', (err) => {
+  //     res.send({
+  //       code: 500,
+  //       data: {
+  //         url: ``
+  //       },
+  //       msg: 'Conversion Error'
+  //     })
+  //   })
+  //   .run();
 })
 
 module.exports = router;
